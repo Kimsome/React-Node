@@ -8,12 +8,24 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/main', async(req, res, next) => {
-    const Gist = require('../model/Gist');
-    const gists = await Gist.find().sort({ 'created_at': -1 });
+    const search = req.query.search ? {
+        $and: [{
+                $or: [
+                    { name: { $regex: new RegExp(req.query.search, 'i') } },
+                    { code: { $regex: new RegExp(req.query.search, 'i') } }
+                ]
+            },
+            { 'author_id': req.session.user.id }
+        ]
+    } : { 'author_id': req.session.user.id };
+
+    const Gist = require("../model/Gist");
+    const gists = await Gist.find(search).sort({ 'created_at': -1 });
 
     res.render('gists', {
         user: req.session.user,
-        gists
+        gists,
+        search: req.query.search
     });
 });
 

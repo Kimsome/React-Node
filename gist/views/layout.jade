@@ -11,5 +11,10 @@ html
           a(href="/users/logout") 退出#{user.login}
         -else
           a(href="/users/login") 登陆
+
+    form(action="/gists/main")
+      input(type='search', placeholder='关键字', name="search", value=search)
+      button(type='submit') 搜索
+
     block content
     script(src="/javascripts/app.js")
