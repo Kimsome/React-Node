@@ -1,0 +1,9 @@
+extends layout
+block content
+    .d-flex.justify-content-between
+        h4 #{gist.name}
+            span.badge.badge-secondary #{gist.type}
+        div author
+
+    pre
+        code#thecode.tcode(class=gist.type) #{gist.code}

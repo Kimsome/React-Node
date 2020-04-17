@@ -39,7 +39,18 @@ router.get('/modify/:id', async(req, res) => {
     if (!gist) throw (new Error('not found'));
     if (gist.author_id != req.session.user.id) throw (new Error('只能修改自己的代码'));
 
-    res.render('modify', { gist });
+    res.render('modify', { gist, user: req.session.user });
+});
+
+router.get('/detail/:id', async(req, res) => {
+    const id = req.params.id;
+    const Gist = require("../model/Gist");
+    const gist = await Gist.findById(id);
+
+    if (!gist) throw (new Error('not found'));
+    if (gist.author_id != req.session.user.id) throw (new Error('只能修改自己的代码'));
+
+    res.render('detail', { gist, user: req.session.user });
 });
 
 router.post('/update/:id', async(req, res) => {
@@ -95,6 +106,10 @@ router.post('/save', async(req, res, next) => {
         type: req.body.type,
         code: req.body.code,
         author_id: req.session.user.id,
+        author: {
+            name: req.session.user.login,
+            avatar: req.session.user.avatar_url
+        },
         created_at: Date.now()
     });
 

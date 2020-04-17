@@ -2,19 +2,34 @@ doctype html
 html
   head
     title= title
+    link(rel='stylesheet', href='https://bootswatch.com/4/flatly/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    div.menu
-        a(href="/") 首页
-        -if(user && user.login)
-          a(href="/gists/main") 我的代码片段
-          a(href="/users/logout") 退出#{user.login}
-        -else
-          a(href="/users/login") 登陆
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light
+      a.navbar-brand(href='#') NodeGist
+      button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarColor03', aria-controls='navbarColor03', aria-expanded='false', aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+      #navbarColor03.collapse.navbar-collapse
+        ul.navbar-nav.mr-auto
+          li.nav-item
+            a.nav-link(href='/') 首页 
+          -if(user && user.login)
+            li.nav-item
+              a.nav-link(href='/gists/main') 我的代码片段
+            li.nav-item
+              a.nav-link(href='/users/logout') 退出#{user.login}  
+          -else
+            li.nav-item
+              a.nav-link(href='/users/login') 登入
+            
+        form.form-inline.my-2.my-lg-0(action="/gists/main")
+          input.form-control.mr-sm-2(type='search', placeholder='关键字', name="search", value=search)
+          button.btn.btn-secondary.my-2.my-sm-0(type='submit') 搜索
 
-    form(action="/gists/main")
-      input(type='search', placeholder='关键字', name="search", value=search)
-      button(type='submit') 搜索
+    .container.top-50
+      block content
 
-    block content
+    script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js', integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo', crossorigin='anonymous')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1', crossorigin='anonymous')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM', crossorigin='anonymous')
     script(src="/javascripts/app.js")

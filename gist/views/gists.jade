@@ -2,18 +2,25 @@ extends layout
 
 block content
   each gist in gists
-    div.gist-list  
-      a(href=("/gists/detail/"+gist.id) target="_blank") #{gist.name}
-      a.btn.btn-light(href=("/gists/modify/"+gist.id)) 修改    
-      a.btn.btn-light(href=("javascript:remove_gist('"+gist.id+"');")) 删除
+    div.gist-list
+      .row
+        .col-8  
+          a(href=("/gists/detail/"+gist.id) target="_blank") #{gist.name}
+        .col-4.text-right
+          a.btn.btn-light(href=("/gists/modify/"+gist.id)) 修改    
+          a.btn.btn-light(href=("javascript:remove_gist('"+gist.id+"');")) 删除
 
   form(action="/gists/save", method="post")
-    div
-      input(name="name")
-      select(name="type")
-        option(value="php") PHP
-        option(value="javascript") JavaScript
-    div
-      textarea(name="code", cols="30", rows="10") 
-    div
-      button(type="submit") 保存代码
+    .form-group.row
+      .col
+        input.form-control(name="name" placeholder="代码片段名称" )
+      .col
+        select.form-control(name="type")
+            each thetype in ["php","javascript","go","python"]
+              option(value=thetype) #{thetype}
+    .form-group.row
+      .col-12
+        textarea.tcode.form-control(rows=10 placeholder="代码" name="code")
+    .form-group.row
+      .col-12
+        button.btn.btn-primary(tyle="submit") 提交代码

@@ -1,16 +1,20 @@
 extends layout
 
 block content
-    form(action="/gists/update/" + gist.id, method="post")
-        div
-            input(name="name" value=gist.name)
-            select(name="type")
-                each thetype in ["php", "javascript", "go", "python"]
-                    -if(gist.type == thetype)
-                        option(value=thetype selected="true") #{thetype}
-                    -else
-                        option(value=thetype) #{thetype}
-        div
-            textarea(name="code", cols="30", rows="10") #{gist.code}
-        div
-            button(type="submit") 保存修改
+    form(action="/gists/update/"+gist.id, method="post")
+        .form-group.row
+            .col
+                input.form-control(name="name" value=gist.name)
+            .col
+                select.form-control(name="type")
+                    each thetype in ["php","javascript","go","python"]
+                        -if(gist.type==thetype)
+                            option(value=thetype selected="true") #{thetype}
+                        -else
+                            option(value=thetype) #{thetype}
+        .form-group.row
+            .col-12
+                textarea.form-control(name="code", cols="30", rows="10") #{gist.code}
+        .form-group.row
+            .col-12
+                button.btn.btn-primary(type="submit") 保存修改
