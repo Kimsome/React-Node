@@ -1,6 +1,6 @@
-const GH_CLIENT_ID = '/** your client id **/';
-const GH_CLIENT_SECRET = '/** your client secret **/';
-const GH_CALLBACK = '/** your callback **/';
+const  GH_CLIENT_ID  =  '/** your client id **/';
+const  GH_CLIENT_SECRET  =  '/** your client secret **/';
+const  GH_CALLBACK  =  '/** your callback **/';
 
 require('url-search-params-polyfill');
 const axios = require('axios');
@@ -15,12 +15,19 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/login', function(req, res, next) {
+    if (req.session.user) return res.redirect('/');
 
     const url = 'https://github.com/login/oauth/authorize' +
         '?client_id=' + encodeURIComponent(GH_CLIENT_ID) +
         '&redirect_uri=' + encodeURIComponent(GH_CALLBACK);
 
     res.render('login', { url });
+});
+
+
+router.get('/logout', async(req, res) => {
+    if (req.session) await req.session.destroy();
+    res.redirect('/');
 });
 
 router.get('/ghcallback', async(req, res) => {
@@ -43,10 +50,12 @@ router.get('/ghcallback', async(req, res) => {
             params: {
                 access_token: acode
             }
-        }).then(function(user) {
-            console.log("got user info", user.data);
-            res.json(user.data);
-            res.end();
+        }).then(function(response) {
+            console.log("got user info", response.data);
+            req.session.user = response.data;
+            res.redirect('/');
+        }).catch(function(error) {
+            console.log(error);
         });
     }
 })
