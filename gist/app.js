@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+require('express-async-errors');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 // 在 cookieParser 之后 require。session 是依赖于 cookie 的。

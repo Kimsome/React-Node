@@ -3,3 +3,14 @@ extends layout
 block content
   h1 gists
   p 这里是gists
+
+  form(action="/gists/save", method="post")
+    div
+      input(name="name")
+      select(name="type")
+        option(value="php") PHP
+        option(value="javascript") JavaScript
+    div
+      textarea(name="code", cols="30", rows="10") 
+    div
+      button(type="submit") 保存代码
