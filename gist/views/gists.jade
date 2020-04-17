@@ -1,8 +1,11 @@
 extends layout
 
 block content
-  h1 gists
-  p 这里是gists
+  each gist in gists
+    div.gist-list  
+      a(href=("/gists/detail/"+gist.id) target="_blank") #{gist.name}
+      a.btn.btn-light(href=("/gists/modify/"+gist.id)) 修改    
+      a.btn.btn-light(href=("javascript:remove_gist('"+gist.id+"');")) 删除
 
   form(action="/gists/save", method="post")
     div
